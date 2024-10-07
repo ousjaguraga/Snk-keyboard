@@ -1,71 +1,7 @@
+/*
+ 
 import UIKit
 import AudioToolbox
-
-// MARK: - UIColor Extension for Dynamic Colors
-
-extension UIColor {
-    static let keyboardBackground = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 44/255, green: 44/255, blue: 46/255, alpha: 1.0) // Dark Mode
-            : UIColor(red: 209/255, green: 209/255, blue: 214/255, alpha: 1.0) // Light Mode
-    }
-    
-    static let letterKeyBackground = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 99/255, green: 99/255, blue: 102/255, alpha: 1.0) // Dark Mode
-            : UIColor.white // Light Mode
-    }
-    
-    static let functionKeyBackground = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 72/255, green: 72/255, blue: 74/255, alpha: 1.0) // Dark Mode
-            : UIColor(red: 172/255, green: 177/255, blue: 183/255, alpha: 1.0) // Light Mode
-    }
-    
-    static let functionKeyTextColor = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor.white
-            : UIColor.black
-    }
-    
-    static let letterKeyTextColor = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor.white
-            : UIColor.black
-    }
-    
-    static let popupBackground = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 99/255, green: 99/255, blue: 102/255, alpha: 1.0) // Dark Mode
-            : UIColor.white // Light Mode
-    }
-    
-    static let popupTextColor = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor.white
-            : UIColor.black
-    }
-    
-    static let suggestionBarBackground = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 44/255, green: 44/255, blue: 46/255, alpha: 1.0) // Dark Mode
-            : UIColor(red: 209/255, green: 209/255, blue: 214/255, alpha: 1.0) // Light Mode
-    }
-    
-    static let suggestionButtonBackground = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor(red: 99/255, green: 99/255, blue: 102/255, alpha: 1.0) // Dark Mode
-            : UIColor.white // Light Mode
-    }
-    
-    static let suggestionButtonTextColor = UIColor { traitCollection in
-        traitCollection.userInterfaceStyle == .dark
-            ? UIColor.white
-            : UIColor.black
-    }
-    
-    static let separatorColor = UIColor.gray.withAlphaComponent(0.5)
-}
 
 // MARK: - KeyButton Class
 
@@ -109,14 +45,17 @@ class KeyButton: UIButton {
         
         // Create the popup view
         popupView = UIView(frame: CGRect(x: popupX, y: popupY, width: popupWidth, height: popupHeight))
-        popupView?.backgroundColor = .popupBackground
+        popupView?.backgroundColor = UIColor(red: 99/255, green: 99/255, blue: 102/255, alpha: 1.0) // #636366
+        // Remove the uniform corner radius
+        // popupView?.layer.cornerRadius = 8
         popupView?.layer.borderWidth = 0
         popupView?.layer.borderColor = UIColor.lightGray.cgColor
+        //popupView?.layer.shadowColor = UIColor.black.cgColor
         popupView?.layer.shadowOpacity = 0.2
         popupView?.layer.shadowOffset = CGSize(width: 0, height: 0)
         popupView?.layer.shadowRadius = 4
         popupView?.alpha = 0 // Start transparent for animation
-        popupView?.transform = CGAffineTransform(scaleX: 0.3, y: 0.3) // Start scaled down for animation
+        popupView?.transform = CGAffineTransform(scaleX: 0.8, y: 0.8) // Start scaled down for animation
         
         // Create a custom path for rounded top corners and sharp bottom corners
         let cornerRadius: CGFloat = 40
@@ -142,7 +81,7 @@ class KeyButton: UIButton {
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = trianglePath.cgPath
-        shapeLayer.fillColor = UIColor.popupBackground.cgColor
+        shapeLayer.fillColor = UIColor.white.cgColor
         shapeLayer.strokeColor = UIColor.lightGray.cgColor
         shapeLayer.lineWidth = 1
         popupView?.layer.addSublayer(shapeLayer)
@@ -152,7 +91,7 @@ class KeyButton: UIButton {
         popupLabel?.textAlignment = .center
         popupLabel?.font = self.titleLabel?.font.withSize(36)
         popupLabel?.text = self.titleLabel?.text
-        popupLabel?.textColor = .popupTextColor
+        popupLabel?.textColor = self.titleColor(for: .normal)
         popupLabel?.adjustsFontSizeToFitWidth = true
         popupLabel?.minimumScaleFactor = 0.5
         
@@ -162,7 +101,7 @@ class KeyButton: UIButton {
         windowView.addSubview(popupView!)
         
         // Animate the popup appearance
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.popupView?.alpha = 1
             self.popupView?.transform = CGAffineTransform.identity
         })
@@ -200,22 +139,6 @@ class KeyButton: UIButton {
         popupView?.removeFromSuperview()
         popupView = nil
         popupLabel = nil
-    }
-    
-    /// Updates the popup's appearance based on the current interface style.
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        // Update popup colors if it's visible
-        if let popup = popupView {
-            popup.backgroundColor = .popupBackground
-            popupLabel?.textColor = .popupTextColor
-            
-            // Update triangle color
-            if let triangleLayer = popup.layer.sublayers?.first as? CAShapeLayer {
-                triangleLayer.fillColor = UIColor.popupBackground.cgColor
-            }
-        }
     }
 }
 
@@ -267,9 +190,6 @@ class KeyboardViewController: UIInputViewController {
     // Property to hold the pan gesture recognizer for spacebar cursor control
     var spacebarPanGesture: UIPanGestureRecognizer?
     
-    // Timer for continuous deletion
-    var deleteTimer: Timer?
-    
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
@@ -285,7 +205,7 @@ class KeyboardViewController: UIInputViewController {
         if let path = Bundle.main.path(forResource: "SoninkeWords", ofType: "txt") {
             do {
                 let content = try String(contentsOfFile: path, encoding: .utf8)
-                wordList = content.components(separatedBy: .newlines).filter { !$0.isEmpty }
+                wordList = content.components(separatedBy: .newlines)
             } catch {
                 print("Error loading word list: \(error)")
             }
@@ -304,7 +224,6 @@ class KeyboardViewController: UIInputViewController {
             keyboardView.removeFromSuperview()
         }
         keyButtons.removeAll()
-        suggestionButtons.removeAll()
         
         // Initialize the keyboard view
         keyboardView = UIView(frame: view.frame)
@@ -337,6 +256,7 @@ class KeyboardViewController: UIInputViewController {
         
         addKeys(for: keys)
         updateShiftState()
+        updateKeyColors(isDarkMode: (textDocumentProxy.keyboardAppearance == .dark))
         updateReturnKey()
     }
     
@@ -355,9 +275,9 @@ class KeyboardViewController: UIInputViewController {
             suggestionBar.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-        suggestionBar.backgroundColor = .suggestionBarBackground
+       
     }
-    
+        
     /// Handles the selection of a suggestion.
     @objc func suggestionTapped(_ sender: UIButton) {
         guard let suggestion = sender.title(for: .normal) else { return }
@@ -370,8 +290,6 @@ class KeyboardViewController: UIInputViewController {
             }
         }
         proxy.insertText(suggestion + " ")
-        
-        updateSuggestions()
     }
     
     // MARK: - Key Layout
@@ -534,10 +452,6 @@ class KeyboardViewController: UIInputViewController {
         // Constraints for Delete key
         deleteKeyButton.widthAnchor.constraint(equalTo: shiftKeyButton.widthAnchor).isActive = true
         deleteKeyButton.rightAnchor.constraint(equalTo: rowView.rightAnchor).isActive = true
-        
-        // Add Long Press Gesture for Continuous Deletion
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleDeleteLongPress(_:)))
-        deleteKeyButton.addGestureRecognizer(longPressRecognizer)
     }
     
     /// Adds keys to the last row, handling special keys like "Space" and "Return".
@@ -602,24 +516,25 @@ class KeyboardViewController: UIInputViewController {
             button.imageView?.contentMode = .scaleAspectFit
             button.accessibilityLabel = "Shift"
             // Highlight shift key when active
-            button.backgroundColor = .functionKeyBackground
-        
+            if shiftState == .on || shiftState == .capsLock {
+                button.backgroundColor = UIColor(red: 0.725, green: 0.753, blue: 0.780, alpha: 1.0) // Lighter gray
+            } else {
+                button.backgroundColor = UIColor(red: 0.667, green: 0.694, blue: 0.722, alpha: 1.0) // Default gray
+            }
         case "Dictation":
             let micImage = UIImage(systemName: "mic.fill")
             button.setImage(micImage, for: .normal)
             button.imageView?.contentMode = .scaleAspectFit
             button.accessibilityLabel = "Dictation"
-        
         case "Space":
             button.setTitle("Space", for: .normal)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-            button.setTitleColor(.letterKeyTextColor, for: .normal)
-            button.backgroundColor = .letterKeyBackground
+            button.setTitleColor(.black, for: .normal)
+            button.backgroundColor = UIColor.white
             button.layer.cornerRadius = 5
             button.layer.borderColor = UIColor.gray.cgColor
             button.layer.borderWidth = 1
             button.accessibilityLabel = "Space"
-        
         case "Return":
             let title = returnKeyTitle()
             button.setTitle(title, for: .normal)
@@ -628,15 +543,13 @@ class KeyboardViewController: UIInputViewController {
             button.backgroundColor = UIColor.systemBlue
             button.layer.cornerRadius = 5
             button.accessibilityLabel = "Return"
-        
         case "123", "ABC":
             let displayTitle = keyboardState == .letters ? "123" : "ABC"
             button.setTitle(displayTitle, for: .normal)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-            button.setTitleColor(.letterKeyTextColor, for: .normal)
-            button.backgroundColor = .functionKeyBackground
-            button.accessibilityLabel = displayTitle
-        
+            button.setTitleColor(.black, for: .normal)
+            button.backgroundColor = UIColor(red: 0.667, green: 0.694, blue: 0.722, alpha: 1.0)
+            button.accessibilityLabel = "ABC"
         default:
             let displayTitle: String
             if keyboardState == .letters {
@@ -653,8 +566,8 @@ class KeyboardViewController: UIInputViewController {
             button.setTitle(displayTitle, for: .normal)
             button.accessibilityLabel = title // Store the original title
             button.titleLabel?.font = UIFont.systemFont(ofSize: 26)
-            button.setTitleColor(.letterKeyTextColor, for: .normal)
-            button.backgroundColor = .letterKeyBackground
+            button.setTitleColor(.black, for: .normal)
+            button.backgroundColor = UIColor.white
             button.layer.cornerRadius = 5
             button.layer.borderColor = UIColor.gray.cgColor
             button.layer.borderWidth = 1
@@ -669,8 +582,8 @@ class KeyboardViewController: UIInputViewController {
         
         // Special keys styling
         if ["Shift", "Delete", "⌫", "Globe", "Return", "123", "ABC", "Dictation"].contains(title) {
-            button.setTitleColor(.functionKeyTextColor, for: .normal)
-            button.backgroundColor = .functionKeyBackground
+            button.setTitleColor(.black, for: .normal)
+            button.backgroundColor = UIColor(red: 0.667, green: 0.694, blue: 0.722, alpha: 1.0) // Gray color
             button.layer.cornerRadius = 5
         }
         
@@ -683,69 +596,6 @@ class KeyboardViewController: UIInputViewController {
     }
     
     // MARK: - Key Actions
-    
-    /// Handles the key press actions for the keyboard.
-    @objc func keyPressed(_ sender: UIButton) {
-        let proxy = textDocumentProxy as UITextDocumentProxy
-        
-        AudioServicesPlaySystemSound(1104)
-        
-        var key: String? = sender.title(for: .normal)
-        
-        // If title is nil, try to get it from accessibilityLabel (for special keys)
-        if key == nil {
-            key = sender.accessibilityLabel
-        }
-        
-        guard let keyPressed = key else { return }
-        
-        switch keyPressed {
-        case "Shift":
-            handleShiftKey()
-        case "⌫", "Delete":
-            proxy.deleteBackward()
-        case "Space":
-            if let suggestion = selectedSuggestion {
-                // Replace the current word with the selected suggestion
-                if let context = proxy.documentContextBeforeInput {
-                    let words = context.components(separatedBy: .whitespacesAndNewlines)
-                    if let currentWord = words.last {
-                        for _ in 0..<currentWord.count {
-                            proxy.deleteBackward()
-                        }
-                    }
-                }
-                proxy.insertText(suggestion + " ")
-            } else {
-                proxy.insertText(" ")
-            }
-        case "saage", "Saage", "daga", "muuru", "Join", "dangi", "Route", "xeyi", "duguta", "xiri":
-            proxy.insertText("\n")
-        case "123", "ABC":
-            handleKeyboardToggle()
-        default:
-            let character: String
-            if keyboardState == .letters {
-                character = shiftState == .off ? keyPressed.lowercased() : keyPressed.uppercased()
-            } else if keyboardState == .numbers || keyboardState == .symbols {
-                if shiftState != .off, let shiftedChar = numberShiftMappings[keyPressed] {
-                    character = shiftedChar
-                } else {
-                    character = keyPressed
-                }
-            } else {
-                character = keyPressed
-            }
-            proxy.insertText(character)
-            if shiftState == .on && keyboardState == .letters {
-                shiftState = .off
-                updateShiftState()
-            }
-        }
-        
-        updateSuggestions()
-    }
-    
     /// Updates the suggestions based on the current input.
     func updateSuggestions() {
         // Remove previous suggestion buttons and separators
@@ -763,13 +613,13 @@ class KeyboardViewController: UIInputViewController {
         guard !currentWord.isEmpty else { return } // No need to suggest if current word is empty
 
         // Find suggestions
-        let matches = wordList.filter { $0.lowercased().hasPrefix(currentWord.lowercased()) }
+        let matches = wordList.filter { $0.hasPrefix(currentWord.lowercased()) }
         let topSuggestions = Array(matches.prefix(3)) // Show top 3 suggestions
 
         // Find the closest match using Levenshtein distance
         var closestSuggestion: String?
         var minimumDistance = Int.max
-        let distanceThreshold = 0 // Allow minor typos
+        let distanceThreshold = 0
 
         for suggestion in topSuggestions {
             let distance = levenshteinDistance(suggestion.lowercased(), currentWord.lowercased())
@@ -792,15 +642,13 @@ class KeyboardViewController: UIInputViewController {
             let button = UIButton(type: .system)
             button.setTitle(suggestion, for: .normal)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-            button.setTitleColor(.suggestionButtonTextColor, for: .normal)
-            //button.backgroundColor = .suggestionButtonBackground
+            button.setTitleColor(.white, for: .normal)
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(suggestionTapped(_:)), for: .touchUpInside)
 
-            // Highlight if it's the closest match
+            // Highlight if it's an exact match
             if suggestion == selectedSuggestion {
-                button.backgroundColor = .letterKeyBackground
-                button.setTitleColor(.white, for: .normal)
+                button.backgroundColor =  UIColor(red: 99/255, green: 99/255, blue: 102/255, alpha: 1.0) // #636366
             }
 
             suggestionBar.addSubview(button)
@@ -825,7 +673,7 @@ class KeyboardViewController: UIInputViewController {
             // Add vertical separator if not the last button
             if index < topSuggestions.count - 1 {
                 let separator = UIView()
-                separator.backgroundColor = .separatorColor
+                separator.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
                 separator.translatesAutoresizingMaskIntoConstraints = false
                 separator.tag = 999 // Tag for later removal
                 suggestionBar.addSubview(separator)
@@ -844,6 +692,8 @@ class KeyboardViewController: UIInputViewController {
         previousView?.rightAnchor.constraint(equalTo: suggestionBar.rightAnchor).isActive = true
     }
     
+    
+  
     /// Calculates the Levenshtein distance between two strings.
     func levenshteinDistance(_ s1: String, _ s2: String) -> Int {
         let s1Count = s1.count
@@ -872,6 +722,71 @@ class KeyboardViewController: UIInputViewController {
             }
         }
         return dist[s1Count][s2Count]
+    }
+
+    
+    /// Handles the key press actions for the keyboard.
+    @objc func keyPressed(_ sender: UIButton) {
+        let proxy = textDocumentProxy as UITextDocumentProxy
+
+        AudioServicesPlaySystemSound(1104)
+
+        var key: String? = sender.title(for: .normal)
+
+        // If title is nil, try to get it from accessibilityLabel (for special keys)
+        if key == nil {
+            key = sender.accessibilityLabel
+        }
+
+        guard let keyPressed = key else { return }
+
+        switch keyPressed {
+        case "Shift":
+            handleShiftKey()
+        case "⌫", "Delete":
+            proxy.deleteBackward()
+        case "Space", "Bira", "Bera":
+            if let suggestion = selectedSuggestion {
+                // Replace the current word with the selected suggestion
+                if let context = proxy.documentContextBeforeInput {
+                    let words = context.components(separatedBy: .whitespacesAndNewlines)
+                    if let currentWord = words.last {
+                        for _ in 0..<currentWord.count {
+                            proxy.deleteBackward()
+                        }
+                    }
+                }
+                proxy.insertText(suggestion + " ")
+            } else {
+                proxy.insertText(" ")
+            }
+        //case "return", "Return", "Go", "Search", "Join", "Next", "Route", "Send", "Done", "Call", "Continue":
+            //proxy.insertText("\n")
+        case "saage", "Saage", "daga", "muuru", "Join", "dangi", "Route", "xeyi", "duguta", "xiri":
+            proxy.insertText("\n")
+        case "123", "ABC":
+            handleKeyboardToggle()
+        default:
+            let character: String
+            if keyboardState == .letters {
+                character = shiftState == .off ? keyPressed.lowercased() : keyPressed.uppercased()
+            } else if keyboardState == .numbers || keyboardState == .symbols {
+                if shiftState != .off, let shiftedChar = numberShiftMappings[keyPressed] {
+                    character = shiftedChar
+                } else {
+                    character = keyPressed
+                }
+            } else {
+                character = keyPressed
+            }
+            proxy.insertText(character)
+            if shiftState == .on && keyboardState == .letters {
+                shiftState = .off
+                updateShiftState()
+            }
+        }
+
+        updateSuggestions()
     }
     
     // MARK: - Shift Key Handling
@@ -923,9 +838,9 @@ class KeyboardViewController: UIInputViewController {
                     
                     // Highlight shift key when active
                     if shiftState == .on || shiftState == .capsLock {
-                        button.backgroundColor = .functionKeyBackground // Adjust if needed
+                        button.backgroundColor = UIColor(red: 0.725, green: 0.753, blue: 0.780, alpha: 1.0) // Lighter gray
                     } else {
-                        button.backgroundColor = .functionKeyBackground
+                        button.backgroundColor = UIColor(red: 0.667, green: 0.694, blue: 0.722, alpha: 1.0) // Default gray
                     }
                 } else if keyboardState == .letters && key.count == 1 {
                     // Update letter keys
@@ -973,18 +888,63 @@ class KeyboardViewController: UIInputViewController {
     
     /// Updates the key colors to match the iOS keyboard on iPhone.
     func updateKeyColors(isDarkMode: Bool) {
-        // The colors are managed dynamically via UIColor extension,
-        // so we just need to trigger a layout/update if necessary.
-        // However, if any additional adjustments are needed, they can be handled here.
+        // Define color constants to match iOS keyboard colors
+        let lightModeKeyboardBackground = UIColor(red: 209/255, green: 209/255, blue: 214/255, alpha: 1.0) // #D1D1D6
+        let lightModeLetterKeyBackground = UIColor.white
+        let lightModeLetterKeyBorderColor = UIColor(red: 209/255, green: 209/255, blue: 214/255, alpha: 1.0) // #D1D1D6
+        let lightModeFunctionKeyBackground = UIColor(red: 172/255, green: 177/255, blue: 183/255, alpha: 1.0) // #ACB1B7
+
+        let darkModeKeyboardBackground =     UIColor(red: 44/255, green: 44/255, blue: 46/255, alpha: 1.0) // #2C2C2E
+        let darkModeLetterKeyBackground =    UIColor(red: 99/255, green: 99/255, blue: 102/255, alpha: 1.0) // #636366
+        let darkModeFunctionKeyBackground =  UIColor(red: 72/255, green: 72/255, blue: 74/255, alpha: 1.0) // #48484A
+
+        // Set the background color of the keyboard's main view to avoid transparency issues
+        self.view.backgroundColor = isDarkMode ? darkModeKeyboardBackground : lightModeKeyboardBackground
+
+        for button in keyButtons {
+            if isDarkMode {
+                if ["Shift", "Delete", "⌫", "Globe", "Return", "123", "ABC", "Dictation"].contains(button.accessibilityLabel ?? "") {
+                    // Function keys in dark mode
+                    button.backgroundColor = darkModeFunctionKeyBackground
+                    button.setTitleColor(.white, for: .normal)
+                } else {
+                    // Letter keys in dark mode
+                    button.backgroundColor = darkModeLetterKeyBackground
+                    button.setTitleColor(.white, for: .normal)
+                    button.layer.borderColor = UIColor.clear.cgColor
+                }
+                button.popupView?.backgroundColor = button.backgroundColor
+                button.popupLabel?.textColor = .white
+            } else {
+                if ["Shift", "Delete", "⌫", "Globe", "Return", "123", "ABC", "Dictation"].contains(button.accessibilityLabel ?? "") {
+                    // Function keys in light mode
+                    button.backgroundColor = lightModeFunctionKeyBackground
+                    button.setTitleColor(.black, for: .normal)
+                } else {
+                    // Letter keys in light mode
+                    button.backgroundColor = lightModeLetterKeyBackground
+                    button.setTitleColor(.black, for: .normal)
+                    button.layer.borderColor = lightModeLetterKeyBorderColor.cgColor
+                }
+                button.popupView?.backgroundColor = button.backgroundColor
+                button.popupLabel?.textColor = .black
+            }
+        }
         
-        // Update suggestion bar colors
-        suggestionBar.backgroundColor = .suggestionBarBackground
-        for button in suggestionButtons {
-            button.backgroundColor = .suggestionButtonBackground
-            button.setTitleColor(.suggestionButtonTextColor, for: .normal)
+        // Update suggestion bar colors to match the iOS keyboard
+        let lightModeSuggestionBarBackground = lightModeKeyboardBackground
+        let darkModeSuggestionBarBackground = darkModeKeyboardBackground
+
+        suggestionBar.backgroundColor = isDarkMode ? darkModeSuggestionBarBackground : lightModeSuggestionBarBackground
+        suggestionButtons.forEach { button in
+            button.backgroundColor = isDarkMode ? darkModeLetterKeyBackground : lightModeLetterKeyBackground
+            button.setTitleColor(isDarkMode ? .white : .black, for: .normal)
         }
     }
     
+
+
+
     // MARK: - Return Key Title
     
     /// Returns the appropriate title for the return key based on the returnKeyType.
@@ -1032,7 +992,6 @@ class KeyboardViewController: UIInputViewController {
     func addSpacebarPanGesture(to button: UIButton) {
         spacebarPanGesture = UIPanGestureRecognizer(target: self, action: #selector(handleSpacebarPan(_:)))
         spacebarPanGesture?.maximumNumberOfTouches = 1
-        spacebarPanGesture?.delegate = self
         button.addGestureRecognizer(spacebarPanGesture!)
         button.isUserInteractionEnabled = true
     }
@@ -1058,28 +1017,6 @@ class KeyboardViewController: UIInputViewController {
         default:
             break
         }
-    }
-    
-    // MARK: - Long Press Handling for Delete Key
-    
-    /// Handles the long press gesture on the delete key for continuous deletion.
-    @objc func handleDeleteLongPress(_ gesture: UILongPressGestureRecognizer) {
-        switch gesture.state {
-        case .began:
-            performDelete()
-            deleteTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(performDelete), userInfo: nil, repeats: true)
-        case .ended, .cancelled, .failed:
-            deleteTimer?.invalidate()
-            deleteTimer = nil
-        default:
-            break
-        }
-    }
-    
-    /// Performs a single deletion action.
-    @objc func performDelete() {
-        let proxy = textDocumentProxy
-        proxy.deleteBackward()
     }
     
     // MARK: - Key Layout Definitions
@@ -1121,11 +1058,4 @@ class KeyboardViewController: UIInputViewController {
     ]
 }
 
-// MARK: - UIGestureRecognizerDelegate
-
-extension KeyboardViewController: UIGestureRecognizerDelegate {
-    // Ensure that pan gesture on space bar doesn't interfere with other gestures
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return false
-    }
-}
+*/

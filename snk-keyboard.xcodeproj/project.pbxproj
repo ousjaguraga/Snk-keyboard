@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D8AFD6202CAA1B4100451AAC /* SoninkeWords.txt in Resources */ = {isa = PBXBuildFile; fileRef = D8AFD61F2CAA1B4100451AAC /* SoninkeWords.txt */; };
 		D8AFD6212CAA1B4100451AAC /* SoninkeWords.txt in Resources */ = {isa = PBXBuildFile; fileRef = D8AFD61F2CAA1B4100451AAC /* SoninkeWords.txt */; };
+		D8AFD6232CB34C7C00451AAC /* Copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AFD6222CB34C7C00451AAC /* Copy.swift */; };
 		D8C77FEC2AED3F1600C679A7 /* WallahaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C77FEB2AED3F1600C679A7 /* WallahaApp.swift */; };
 		D8C77FEE2AED3F1600C679A7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C77FED2AED3F1600C679A7 /* ContentView.swift */; };
 		D8C77FF02AED3F1800C679A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8C77FEF2AED3F1800C679A7 /* Assets.xcassets */; };
@@ -44,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		D8AFD61F2CAA1B4100451AAC /* SoninkeWords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SoninkeWords.txt; sourceTree = "<group>"; };
+		D8AFD6222CB34C7C00451AAC /* Copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Copy.swift; sourceTree = "<group>"; };
 		D8C77FE82AED3F1600C679A7 /* snk-keyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "snk-keyboard.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C77FEB2AED3F1600C679A7 /* WallahaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallahaApp.swift; sourceTree = "<group>"; };
 		D8C77FED2AED3F1600C679A7 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				D8C780022AED3F9100C679A7 /* KeyboardViewController.swift */,
+				D8AFD6222CB34C7C00451AAC /* Copy.swift */,
 				D8AFD61F2CAA1B4100451AAC /* SoninkeWords.txt */,
 				D8C780042AED3F9100C679A7 /* Info.plist */,
 			);
@@ -238,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8C780032AED3F9100C679A7 /* KeyboardViewController.swift in Sources */,
+				D8AFD6232CB34C7C00451AAC /* Copy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
