@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D868D2F92CB6D12E00EBF3B5 /* KeyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D868D2F82CB6D12E00EBF3B5 /* KeyButton.swift */; };
+		D868D2FB2CB73CEC00EBF3B5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D868D2FA2CB73CEC00EBF3B5 /* Extensions.swift */; };
 		D8AFD6202CAA1B4100451AAC /* SoninkeWords.txt in Resources */ = {isa = PBXBuildFile; fileRef = D8AFD61F2CAA1B4100451AAC /* SoninkeWords.txt */; };
 		D8AFD6212CAA1B4100451AAC /* SoninkeWords.txt in Resources */ = {isa = PBXBuildFile; fileRef = D8AFD61F2CAA1B4100451AAC /* SoninkeWords.txt */; };
 		D8AFD6232CB34C7C00451AAC /* Copy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8AFD6222CB34C7C00451AAC /* Copy.swift */; };
@@ -14,7 +16,6 @@
 		D8C77FEE2AED3F1600C679A7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C77FED2AED3F1600C679A7 /* ContentView.swift */; };
 		D8C77FF02AED3F1800C679A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8C77FEF2AED3F1800C679A7 /* Assets.xcassets */; };
 		D8C77FF32AED3F1800C679A7 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8C77FF22AED3F1800C679A7 /* Preview Assets.xcassets */; };
-		D8C77FFB2AED3F6F00C679A7 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = D8C77FFA2AED3F6F00C679A7 /* KeyboardKit */; };
 		D8C780032AED3F9100C679A7 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C780022AED3F9100C679A7 /* KeyboardViewController.swift */; };
 		D8C780072AED3F9100C679A7 /* soninke.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D8C780002AED3F9100C679A7 /* soninke.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -44,6 +45,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D868D2F82CB6D12E00EBF3B5 /* KeyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyButton.swift; sourceTree = "<group>"; };
+		D868D2FA2CB73CEC00EBF3B5 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D8AFD61F2CAA1B4100451AAC /* SoninkeWords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = SoninkeWords.txt; sourceTree = "<group>"; };
 		D8AFD6222CB34C7C00451AAC /* Copy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Copy.swift; sourceTree = "<group>"; };
 		D8C77FE82AED3F1600C679A7 /* snk-keyboard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "snk-keyboard.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,7 +64,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8C77FFB2AED3F6F00C679A7 /* KeyboardKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -115,7 +117,9 @@
 		D8C780012AED3F9100C679A7 /* soninke */ = {
 			isa = PBXGroup;
 			children = (
+				D868D2FA2CB73CEC00EBF3B5 /* Extensions.swift */,
 				D8C780022AED3F9100C679A7 /* KeyboardViewController.swift */,
+				D868D2F82CB6D12E00EBF3B5 /* KeyButton.swift */,
 				D8AFD6222CB34C7C00451AAC /* Copy.swift */,
 				D8AFD61F2CAA1B4100451AAC /* SoninkeWords.txt */,
 				D8C780042AED3F9100C679A7 /* Info.plist */,
@@ -142,7 +146,6 @@
 			);
 			name = "snk-keyboard";
 			packageProductDependencies = (
-				D8C77FFA2AED3F6F00C679A7 /* KeyboardKit */,
 			);
 			productName = Wallaha;
 			productReference = D8C77FE82AED3F1600C679A7 /* snk-keyboard.app */;
@@ -193,7 +196,6 @@
 			);
 			mainGroup = D8C77FDF2AED3F1600C679A7;
 			packageReferences = (
-				D8C77FF92AED3F6F00C679A7 /* XCRemoteSwiftPackageReference "KeyboardKit" */,
 			);
 			productRefGroup = D8C77FE92AED3F1600C679A7 /* Products */;
 			projectDirPath = "";
@@ -240,6 +242,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D868D2F92CB6D12E00EBF3B5 /* KeyButton.swift in Sources */,
+				D868D2FB2CB73CEC00EBF3B5 /* Extensions.swift in Sources */,
 				D8C780032AED3F9100C679A7 /* KeyboardViewController.swift in Sources */,
 				D8AFD6232CB34C7C00451AAC /* Copy.swift in Sources */,
 			);
@@ -528,25 +532,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		D8C77FF92AED3F6F00C679A7 /* XCRemoteSwiftPackageReference "KeyboardKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/KeyboardKit/KeyboardKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.9.6;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D8C77FFA2AED3F6F00C679A7 /* KeyboardKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D8C77FF92AED3F6F00C679A7 /* XCRemoteSwiftPackageReference "KeyboardKit" */;
-			productName = KeyboardKit;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D8C77FE02AED3F1600C679A7 /* Project object */;
 }
