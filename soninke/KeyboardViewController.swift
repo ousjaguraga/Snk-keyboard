@@ -583,7 +583,8 @@ class KeyboardViewController: UIInputViewController {
         let distanceThreshold = 0 // Allow minor typos
 
         for suggestion in topSuggestions {
-            let distance = levenshteinDistance(suggestion.lowercased(), currentWord.lowercased())
+            let distance = levenshteinDistance(suggestion, currentWord)
+
             if distance < minimumDistance {
                 minimumDistance = distance
                 closestSuggestion = suggestion

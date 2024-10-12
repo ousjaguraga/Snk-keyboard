@@ -218,7 +218,7 @@ Cigandeppe
 Ciloone
 Copyright
 D
-Dakar
+DAKAR
 Daabe
 Daado
 Daani
@@ -431,7 +431,8 @@ Fuura
 Fuure
 Fuute
 Fuutunden
-Gollu
+G
+GOLLU
 Gaada
 Gaaranti
 Gaare
@@ -971,11 +972,9 @@ Musnadu
 Muuminin
 Muusa
 N
-Na
-na
+NA
 NI
 NOONUN
-noonu
 Na
 Naabure
 Naaburun
@@ -1233,7 +1232,6 @@ Suxuna
 T
 TANJIGOORA
 TUWAAXU
-tuwaaxu
 Ta
 Taabuta
 Taafiya
@@ -1498,7 +1496,6 @@ Xurantan
 Xuranŋe
 Xuxeyi
 YAXARE
-Yaxare
 Ya
 Yaada
 Yaafa
@@ -6489,7 +6486,7 @@ sopite
 sopiteye
 soppi
 sore
-sore
+sore/soro
 soro
 soroba
 soroban
@@ -7774,8 +7771,7 @@ xene
 xenente
 xennaanon
 xenne
-xenne
-xenu
+xenne/xenu
 xenpa
 xenpe
 xenpen
@@ -8265,7 +8261,7 @@ yige
 yigeene
 yigene
 yigeyen
-yigi
+yigi-yigi
 yigo
 yigon
 yigu
@@ -8581,5 +8577,4 @@ za
 ŋaxa
 ŋelunxaye
 ŋuñen
-
 

@@ -1,5 +1,6 @@
 import UIKit
 
+
 class KeyButton: UIButton {
     var popupView: UIView?
     var popupLabel: UILabel?
@@ -56,7 +57,7 @@ class KeyButton: UIButton {
 
         // Calculate initial popupX to center above the key
         let popupX = keyFrameInWindow.midX - popupWidth / 2
-        let popupY = keyFrameInWindow.origin.y - popupHeight + 10
+        let popupY = keyFrameInWindow.origin.y - popupHeight + 10 // 10
 
         // Create the popup view
         popupView = UIView(frame: CGRect(x: popupX, y: popupY, width: popupWidth, height: popupHeight))
@@ -67,7 +68,7 @@ class KeyButton: UIButton {
         popupView?.layer.shadowOffset = CGSize(width: 0, height: 0)
         popupView?.layer.shadowRadius = 4
         popupView?.alpha = 0 // Start transparent for animation
-        popupView?.transform = CGAffineTransform(scaleX: 0.3, y: 0.3) // Start scaled down for animation
+        //popupView?.transform = CGAffineTransform(scaleX: 0.9, y: 0.3) // Start scaled down for animation
 
         // Create a custom path for rounded corners
         let cornerRadius: CGFloat = 10 // Slight rounding for top corners
@@ -104,6 +105,7 @@ class KeyButton: UIButton {
             self.popupView?.transform = CGAffineTransform.identity
         })
     }
+    
 
     /// Hides the popup view with animation.
     @objc func hidePopup() {
@@ -112,7 +114,7 @@ class KeyButton: UIButton {
         // Show the key label again when the popup hides
         self.titleLabel?.alpha = 1
 
-        UIView.animate(withDuration: 0.001, delay: 0, options: [.curveEaseIn], animations: {
+        UIView.animate(withDuration: 0.01, delay: 0, options: [.curveEaseIn], animations: {
             popup.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
             popup.alpha = 0
         }, completion: { _ in
@@ -122,3 +124,5 @@ class KeyButton: UIButton {
         })
     }
 }
+ 
+ 
